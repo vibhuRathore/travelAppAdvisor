@@ -12,11 +12,18 @@ export default function App() {
       <CssBaseline />
       <BoundsAndCoordinatesProvider>
         <Header />
-        <Grid container spacing={3} style={{ width: '100vw' }}>
+        <Grid
+          container
+          height={{ md: 'calc(100vh - 5rem)' }}
+          sx={{
+            width: '95%',
+            marginInline: 'auto',
+          }}
+        >
           <Grid item xs={12} md={4}>
             <List />
           </Grid>
-          <Grid item xs={12} md={8}>
+          <Grid item height={{ xs: '60vh', md: '100%' }} xs={12} md={8}>
             <Map />
           </Grid>
         </Grid>
