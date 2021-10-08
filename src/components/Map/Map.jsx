@@ -7,6 +7,13 @@ import { useBoundsAndCoordinatesUpdate } from '../../contexts/BoundsAndCoordinat
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+// workaround for transpiling error of Mapbox GL JS (slows site)
+import mapboxgl from 'mapbox-gl';
+
+mapboxgl.workerClass =
+  // eslint-disable-next-line import/no-webpack-loader-syntax
+  require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
+
 export default function Map() {
   const updateBoundsAndCoordinates = useBoundsAndCoordinatesUpdate();
   const [viewport, setViewport] = useState({
