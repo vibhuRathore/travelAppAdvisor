@@ -1,4 +1,5 @@
-import { alpha, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { alpha } from '@mui/material';
 
 export default makeStyles((theme) => ({
   title: {
@@ -33,8 +34,8 @@ export default makeStyles((theme) => ({
     color: 'inherit',
   },
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    padding: `${theme.spacing(1, 1, 1, 0)} !important`,
+    paddingLeft: `calc(1em + ${theme.spacing(4)}) !important`,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: { width: '20ch' },

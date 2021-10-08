@@ -1,12 +1,13 @@
-import { CssBaseline, Grid } from '@material-ui/core';
-
+import { createTheme, CssBaseline, Grid, ThemeProvider } from '@mui/material';
 import Header from './components/Header';
 import List from './components/List';
 import Map from './components/Map';
 
+const theme = createTheme();
+
 export default function App() {
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header />
       <Grid container spacing={3} style={{ width: '100vw' }}>
@@ -17,6 +18,6 @@ export default function App() {
           <Map />
         </Grid>
       </Grid>
-    </>
+    </ThemeProvider>
   );
 }
