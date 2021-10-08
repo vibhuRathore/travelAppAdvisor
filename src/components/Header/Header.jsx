@@ -1,5 +1,4 @@
 import { AppBar, Box, InputBase, Toolbar, Typography } from '@material-ui/core';
-import { Autocomplete } from '@react-google-maps/api';
 import { Search } from '@material-ui/icons';
 
 import useStyles from './styles';
@@ -17,7 +16,6 @@ export default function Header() {
           <Typography variant="h6" className={classes.title}>
             Explore new places
           </Typography>
-          {/*<Autocomplete>*/}
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <Search />
@@ -27,7 +25,6 @@ export default function Header() {
               classes={{ root: classes.inputRoot, input: classes.inputInput }}
             />
           </div>
-          {/*</Autocomplete>*/}
         </Box>
       </Toolbar>
     </AppBar>
