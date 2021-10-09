@@ -1,8 +1,7 @@
-import { createTheme, CssBaseline, Grid, ThemeProvider } from '@mui/material';
-import Header from './components/Header';
-import List from './components/List';
-import Map from './components/Map';
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { BoundsAndCoordinatesProvider } from './contexts/BoundsAndCoordinatesContext';
+import Header from './components/Header';
+import Main from './components/Main';
 
 const theme = createTheme();
 
@@ -12,21 +11,7 @@ export default function App() {
       <CssBaseline />
       <BoundsAndCoordinatesProvider>
         <Header />
-        <Grid
-          container
-          height={{ md: 'calc(100vh - 5rem)' }}
-          sx={{
-            width: '95%',
-            marginInline: 'auto',
-          }}
-        >
-          <Grid height={{ xs: '60vh', md: '100%' }} item xs={12} md={4}>
-            <List />
-          </Grid>
-          <Grid item height={{ xs: '60vh', md: '100%' }} xs={12} md={8}>
-            <Map />
-          </Grid>
-        </Grid>
+        <Main />
       </BoundsAndCoordinatesProvider>
     </ThemeProvider>
   );
