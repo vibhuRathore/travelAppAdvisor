@@ -25,11 +25,11 @@ export default function List() {
     setIsLoading(true);
     const { sw, ne } = boundsAndCoordinates.bounds;
     console.info('Fetching data for bounds ', { boundsAndCoordinates });
-    getPlacesData(sw, ne, 'restaurants').then((data) => {
+    getPlacesData(sw, ne, type).then((data) => {
       setIsLoading(false);
       setPlaces(data);
     });
-  }, [boundsAndCoordinates]);
+  }, [boundsAndCoordinates, type]);
 
   return (
     <Box
