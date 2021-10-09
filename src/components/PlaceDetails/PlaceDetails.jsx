@@ -75,7 +75,7 @@ const PlaceDetails = ({ place, selected, refProp }) => {
               color="textSecondary"
               variant="subtitle1"
             >
-              {place.ranking.substring(0, place.ranking.indexOf(' ')) || '??'}
+              {place?.ranking?.substring(0, place.ranking.indexOf(' ')) || '??'}
             </Typography>
           </Box>
         </Box>
