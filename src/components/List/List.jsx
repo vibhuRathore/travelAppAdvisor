@@ -1,7 +1,93 @@
+import { useEffect, useState } from 'react';
+import {
+  Box,
+  CircularProgress,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material';
+import { useBoundsAndCoordinates } from '../../contexts/BoundsAndCoordinatesContext';
+import { getPlacesData } from '../../api';
+import PlaceDetails from '../PlaceDetails';
+
 export default function List() {
+  const boundsAndCoordinates = useBoundsAndCoordinates();
+  const [places, setPlaces] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [type, setType] = useState('restaurants');
+  const [rating, setRating] = useState(0);
+
+  useEffect(() => {
+    if (!boundsAndCoordinates) return;
+    setIsLoading(true);
+    const { sw, ne } = boundsAndCoordinates.bounds;
+    console.info('Fetching data for bounds ', { boundsAndCoordinates });
+    getPlacesData(sw, ne, 'restaurants').then((data) => {
+      setIsLoading(false);
+      setPlaces(data);
+    });
+  }, [boundsAndCoordinates]);
+
   return (
-    <div>
-      <h1>List component</h1>
-    </div>
+    <Box
+      display="flex"
+      flexDirection="column"
+      sx={{ width: '100%', height: '100%', padding: 1, paddingBottom: 0 }}
+    >
+      <Box width="100%">
+        <Typography variant="h4">Food & Dining around you</Typography>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="type">Type</InputLabel>
+          <Select
+            labelId="type"
+            id="type"
+            label="Type"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          >
+            <MenuItem value="restaurants">Restaurants</MenuItem>
+            <MenuItem value="hotels">Hotels</MenuItem>
+            <MenuItem value="attractions">Attractions</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="rating">Rating</InputLabel>
+          <Select
+            labelId="rating"
+            id="rating"
+            label="Rating"
+            value={rating}
+            onChange={(e) => setRating(e.target.value)}
+          >
+            <MenuItem value="0">All</MenuItem>
+            <MenuItem value="3">Above 3.0</MenuItem>
+            <MenuItem value="4">Above 4.0</MenuItem>
+            <MenuItem value="4.5">Above 4.5</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        flexGrow={1}
+        sx={{ overflowY: 'auto' }}
+      >
+        {isLoading ? (
+          <CircularProgress sx={{ margin: 'auto' }} size={70} />
+        ) : (
+          <Grid container>
+            {places.map((place, index) => (
+              <Grid item key={index} xs={12}>
+                <PlaceDetails place={place} />
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Box>
+    </Box>
   );
 }

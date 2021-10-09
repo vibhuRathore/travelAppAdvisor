@@ -20,7 +20,7 @@ export default function App() {
             marginInline: 'auto',
           }}
         >
-          <Grid item xs={12} md={4}>
+          <Grid height={{ xs: '60vh', md: '100%' }} item xs={12} md={4}>
             <List />
           </Grid>
           <Grid item height={{ xs: '60vh', md: '100%' }} xs={12} md={8}>
