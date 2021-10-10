@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
 import { useViewportBounds } from '../../contexts/ViewportContext';
 import List from '../List';
@@ -11,16 +11,45 @@ export default function Main() {
   const [isLoading, setIsLoading] = useState(false);
   const [type, setType] = useState('restaurants');
   const [rating, setRating] = useState(0);
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
+  const cachedPlaces = useRef({});
 
   useEffect(() => {
     if (!viewportBounds) return;
+    if (cachedPlaces.current[type]) {
+      setPlaces(cachedPlaces.current[type]);
+      return;
+    }
     setIsLoading(true);
     const { sw, ne } = viewportBounds;
     getPlacesData(sw, ne, type).then((data) => {
+      cachedPlaces.current[type] = data;
       setIsLoading(false);
       setPlaces(data);
     });
-  }, [viewportBounds, type]);
+  }, [type]);
+
+  useEffect(() => {
+    if (rating === 0) {
+      setFilteredPlaces(places);
+    } else {
+      setFilteredPlaces(
+        places.filter((place) => Number(place.rating) > rating)
+      );
+    }
+  }, [places, rating]);
+
+  useEffect(() => {
+    if (!viewportBounds) return;
+    cachedPlaces.current = {};
+    setIsLoading(true);
+    const { sw, ne } = viewportBounds;
+    getPlacesData(sw, ne, type).then((data) => {
+      cachedPlaces.current[type] = data;
+      setIsLoading(false);
+      setPlaces(data);
+    });
+  }, [viewportBounds]);
 
   return (
     <Grid
@@ -38,7 +67,7 @@ export default function Main() {
           type={type}
           setType={setType}
           isLoading={isLoading}
-          places={places}
+          places={filteredPlaces}
         />
       </Grid>
       <Grid item height={{ xs: '60vh', md: '100%' }} xs={12} md={8}>
