@@ -16,11 +16,7 @@ mapboxgl.workerClass =
 
 export default function Map() {
   const setViewportContext = useViewportUpdate();
-  const [viewport, setViewport] = useState({
-    latitude: 30,
-    longitude: 78,
-    zoom: 10,
-  });
+  const [viewport, setViewport] = useState(null);
 
   const debouncedViewportContextSetter = useCallback(
     debounce((data) => {
@@ -30,37 +26,51 @@ export default function Map() {
   );
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(({ coords }) => {
-      const { latitude, longitude } = coords;
-      setViewport((previousViewport) => ({
-        ...previousViewport,
-        latitude,
-        longitude,
-      }));
-      setViewportContext({ ...viewport, longitude, latitude });
-    });
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        const { latitude, longitude } = coords;
+        setViewportContext({ ...viewport, longitude, latitude });
+        setViewport((previousViewport) => ({
+          ...previousViewport,
+          latitude,
+          longitude,
+          zoom: 10,
+        }));
+      },
+      () => {
+        const fallbackViewport = {
+          latitude: 34.0161,
+          longitude: 75.315,
+          zoom: 9,
+        };
+        setViewportContext(fallbackViewport);
+        setViewport(fallbackViewport);
+      }
+    );
   }, []);
 
   return (
     <div style={{ width: '100%', height: '100%' }}>
-      <ReactMapGL
-        latitude={viewport.latitude}
-        longitude={viewport.longitude}
-        zoom={viewport.zoom}
-        width="100%"
-        height="100%"
-        mapStyle="mapbox://styles/bhardwaj-snigdh/ckugspu7w4v0q18rz9hbi3rs4"
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-        onViewportChange={({ width, height, latitude, longitude, zoom }) => {
-          const newViewport = { width, height, latitude, longitude, zoom };
-          setViewport(newViewport);
-          debouncedViewportContextSetter(newViewport);
-        }}
-      >
-        <Marker longitude={viewport.longitude} latitude={viewport.latitude}>
-          <LocationOn color="error" fontSize="large" />
-        </Marker>
-      </ReactMapGL>
+      {viewport && (
+        <ReactMapGL
+          latitude={viewport.latitude}
+          longitude={viewport.longitude}
+          zoom={viewport.zoom}
+          width="100%"
+          height="100%"
+          mapStyle="mapbox://styles/bhardwaj-snigdh/ckugspu7w4v0q18rz9hbi3rs4"
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+          onViewportChange={({ width, height, latitude, longitude, zoom }) => {
+            const newViewport = { width, height, latitude, longitude, zoom };
+            setViewport(newViewport);
+            debouncedViewportContextSetter(newViewport);
+          }}
+        >
+          <Marker longitude={viewport.longitude} latitude={viewport.latitude}>
+            <LocationOn color="error" fontSize="large" />
+          </Marker>
+        </ReactMapGL>
+      )}
     </div>
   );
 }
