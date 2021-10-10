@@ -9,27 +9,27 @@ import {
   Select,
   Typography,
 } from '@mui/material';
-import { useBoundsAndCoordinates } from '../../contexts/BoundsAndCoordinatesContext';
+import { useViewportBounds } from '../../contexts/ViewportContext';
 import { getPlacesData } from '../../api';
 import PlaceDetails from '../PlaceDetails';
 
 export default function List() {
-  const boundsAndCoordinates = useBoundsAndCoordinates();
+  const viewportBounds = useViewportBounds();
   const [places, setPlaces] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [type, setType] = useState('restaurants');
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
-    if (!boundsAndCoordinates) return;
+    if (!viewportBounds) return;
     setIsLoading(true);
-    const { sw, ne } = boundsAndCoordinates.bounds;
-    console.info('Fetching data for bounds ', { boundsAndCoordinates });
+    const { sw, ne } = viewportBounds;
+    console.info('Fetching data for bounds ', { viewportBounds });
     getPlacesData(sw, ne, type).then((data) => {
       setIsLoading(false);
       setPlaces(data);
     });
-  }, [boundsAndCoordinates, type]);
+  }, [viewportBounds, type]);
 
   return (
     <Box
@@ -80,7 +80,7 @@ export default function List() {
           <CircularProgress sx={{ margin: 'auto' }} size={70} />
         ) : (
           <Grid container>
-            {places.map((place, index) => (
+            {places?.map((place, index) => (
               <Grid item key={index} xs={12}>
                 <PlaceDetails place={place} />
               </Grid>

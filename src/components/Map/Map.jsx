@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react';
-import ReactMapGL, { Marker, WebMercatorViewport } from 'react-map-gl';
+import ReactMapGL, { Marker } from 'react-map-gl';
 import debounce from 'lodash.debounce';
 import { LocationOn } from '@mui/icons-material';
-import { useBoundsAndCoordinatesUpdate } from '../../contexts/BoundsAndCoordinatesContext';
+import { useViewportUpdate } from '../../contexts/ViewportContext';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -15,17 +15,17 @@ mapboxgl.workerClass =
   require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 export default function Map() {
-  const updateBoundsAndCoordinates = useBoundsAndCoordinatesUpdate();
+  const setViewportContext = useViewportUpdate();
   const [viewport, setViewport] = useState({
     latitude: 30,
     longitude: 78,
     zoom: 10,
   });
 
-  const debouncedContextSetter = useCallback(
+  const debouncedViewportContextSetter = useCallback(
     debounce((data) => {
-      updateBoundsAndCoordinates(data);
-    }, 1000),
+      setViewportContext(data);
+    }, 750),
     []
   );
 
@@ -37,18 +37,9 @@ export default function Map() {
         latitude,
         longitude,
       }));
+      setViewportContext({ ...viewport, longitude, latitude });
     });
   }, []);
-
-  useEffect(() => {
-    const viewportData = new WebMercatorViewport(viewport);
-    const boundsArray = viewportData.getBounds();
-    const sw = { lng: boundsArray[0][0], lat: boundsArray[0][1] };
-    const ne = { lng: boundsArray[1][0], lat: boundsArray[1][1] };
-    const { latitude, longitude } = viewport;
-
-    debouncedContextSetter({ latitude, longitude, bounds: { sw, ne } });
-  }, [viewport]);
 
   return (
     <div style={{ width: '100%', height: '100%' }}>
@@ -61,7 +52,9 @@ export default function Map() {
         mapStyle="mapbox://styles/bhardwaj-snigdh/ckugspu7w4v0q18rz9hbi3rs4"
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         onViewportChange={({ width, height, latitude, longitude, zoom }) => {
-          setViewport({ width, height, latitude, longitude, zoom });
+          const newViewport = { width, height, latitude, longitude, zoom };
+          setViewport(newViewport);
+          debouncedViewportContextSetter(newViewport);
         }}
       >
         <Marker longitude={viewport.longitude} latitude={viewport.latitude}>

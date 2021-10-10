@@ -1,5 +1,5 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
-import { BoundsAndCoordinatesProvider } from './contexts/BoundsAndCoordinatesContext';
+import { ViewportProvider } from './contexts/ViewportContext';
 import Header from './components/Header';
 import Main from './components/Main';
 
@@ -9,10 +9,10 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <BoundsAndCoordinatesProvider>
+      <ViewportProvider>
         <Header />
         <Main />
-      </BoundsAndCoordinatesProvider>
+      </ViewportProvider>
     </ThemeProvider>
   );
 }
