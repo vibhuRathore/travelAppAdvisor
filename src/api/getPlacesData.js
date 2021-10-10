@@ -22,5 +22,6 @@ export default async function getPlacesData(sw, ne, type) {
   } catch (err) {
     console.log('Failed to get places data');
     console.log(err);
+    return [];
   }
 }
