@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   Box,
   CircularProgress,
@@ -9,28 +8,16 @@ import {
   Select,
   Typography,
 } from '@mui/material';
-import { useViewportBounds } from '../../contexts/ViewportContext';
-import { getPlacesData } from '../../api';
 import PlaceDetails from '../PlaceDetails';
 
-export default function List() {
-  const viewportBounds = useViewportBounds();
-  const [places, setPlaces] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [type, setType] = useState('restaurants');
-  const [rating, setRating] = useState(0);
-
-  useEffect(() => {
-    if (!viewportBounds) return;
-    setIsLoading(true);
-    const { sw, ne } = viewportBounds;
-    console.info('Fetching data for bounds ', { viewportBounds });
-    getPlacesData(sw, ne, type).then((data) => {
-      setIsLoading(false);
-      setPlaces(data);
-    });
-  }, [viewportBounds, type]);
-
+export default function List({
+  rating,
+  type,
+  places,
+  isLoading,
+  setRating,
+  setType,
+}) {
   return (
     <Box
       display="flex"
@@ -60,7 +47,7 @@ export default function List() {
             id="rating"
             label="Rating"
             value={rating}
-            onChange={(e) => setRating(e.target.value)}
+            onChange={(e) => setRating(Number(e.target.value))}
           >
             <MenuItem value="0">All</MenuItem>
             <MenuItem value="3">Above 3.0</MenuItem>

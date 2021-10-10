@@ -1,8 +1,27 @@
+import { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
+import { useViewportBounds } from '../../contexts/ViewportContext';
 import List from '../List';
 import Map from '../Map';
+import { getPlacesData } from '../../api';
 
 export default function Main() {
+  const viewportBounds = useViewportBounds();
+  const [places, setPlaces] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [type, setType] = useState('restaurants');
+  const [rating, setRating] = useState(0);
+
+  useEffect(() => {
+    if (!viewportBounds) return;
+    setIsLoading(true);
+    const { sw, ne } = viewportBounds;
+    getPlacesData(sw, ne, type).then((data) => {
+      setIsLoading(false);
+      setPlaces(data);
+    });
+  }, [viewportBounds, type]);
+
   return (
     <Grid
       container
@@ -13,7 +32,14 @@ export default function Main() {
       }}
     >
       <Grid height={{ xs: '60vh', md: '100%' }} item xs={12} md={4}>
-        <List />
+        <List
+          rating={rating}
+          setRating={setRating}
+          type={type}
+          setType={setType}
+          isLoading={isLoading}
+          places={places}
+        />
       </Grid>
       <Grid item height={{ xs: '60vh', md: '100%' }} xs={12} md={8}>
         <Map />
