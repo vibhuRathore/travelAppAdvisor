@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 import { WebMercatorViewport } from 'react-map-gl';
 
 export const ViewportContext = createContext(null);
@@ -29,14 +29,6 @@ export function ViewportProvider({ children }) {
       ne: { lng: bounds[1][0], lat: bounds[1][1] },
     };
   }, [viewport]);
-
-  useEffect(() => {
-    console.log('Global viewport changed', { viewport });
-  }, [viewport]);
-
-  useEffect(() => {
-    console.log('Global viewport bounds changed', { viewportBounds });
-  }, [viewportBounds]);
 
   return (
     <ViewportContext.Provider value={viewport}>

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import ReactMapGL, { Marker } from 'react-map-gl';
 import debounce from 'lodash.debounce';
 import { LocationOn } from '@mui/icons-material';
-import { useViewportUpdate } from '../../contexts/ViewportContext';
+import { useViewport, useViewportUpdate } from '../../contexts/ViewportContext';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -15,6 +15,7 @@ mapboxgl.workerClass =
   require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 export default function Map() {
+  const viewportContext = useViewport();
   const setViewportContext = useViewportUpdate();
   const [viewport, setViewport] = useState(null);
 
@@ -26,16 +27,17 @@ export default function Map() {
   );
 
   useEffect(() => {
+    if (!viewportContext) return;
+    setViewport(viewportContext);
+  }, [viewportContext]);
+
+  useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         const { latitude, longitude } = coords;
-        setViewportContext({ ...viewport, longitude, latitude });
-        setViewport((previousViewport) => ({
-          ...previousViewport,
-          latitude,
-          longitude,
-          zoom: 10,
-        }));
+        const currentLocation = { latitude, longitude, zoom: 10 };
+        setViewportContext(currentLocation);
+        setViewport(currentLocation);
       },
       () => {
         const fallbackViewport = {
