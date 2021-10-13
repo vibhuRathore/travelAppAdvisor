@@ -3,7 +3,12 @@ import { Paper, Rating, Tooltip, Typography } from '@mui/material';
 import { Marker } from 'react-map-gl';
 import './CustomMarker.css';
 
-export default function CustomMarker({ place, isMobile }) {
+export default function CustomMarker({
+  place,
+  index,
+  setClickedPlace,
+  isMobile,
+}) {
   return (
     <Marker
       key={place.location_id}
@@ -14,11 +19,17 @@ export default function CustomMarker({ place, isMobile }) {
     >
       {isMobile ? (
         <Tooltip disableInteractive placement="top" title={place.name}>
-          <LocationOn elevation={4} fontSize="large" color="error" />
+          <LocationOn
+            onClick={() => setClickedPlace(index)}
+            elevation={4}
+            fontSize="large"
+            color="error"
+          />
         </Tooltip>
       ) : (
         <Paper
           elevation={2}
+          onClick={() => setClickedPlace(index)}
           sx={{
             width: 104,
             paddingX: 1,
@@ -37,13 +48,17 @@ export default function CustomMarker({ place, isMobile }) {
               {place.name}
             </Typography>
           </Tooltip>
-          {place?.photo?.images?.large && (
-            <img
-              style={{ objectFit: 'cover', width: '100%', maxHeight: 70 }}
-              src={place.photo.images.large.url}
-              alt={place.name}
-            />
-          )}
+
+          <img
+            style={{ objectFit: 'cover', width: '100%', maxHeight: 70 }}
+            src={
+              place?.photo
+                ? place.photo.images.large.url
+                : 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
+            }
+            alt={place.name}
+          />
+
           <Rating
             size="small"
             value={Number(place.rating)}

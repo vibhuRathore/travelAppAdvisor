@@ -15,7 +15,7 @@ mapboxgl.workerClass =
   // eslint-disable-next-line import/no-webpack-loader-syntax
   require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
-export default function Map({ places }) {
+export default function Map({ places, setClickedPlace }) {
   const viewportContext = useViewport();
   const setViewportContext = useViewportUpdate();
   const [viewport, setViewport] = useState(null);
@@ -55,8 +55,14 @@ export default function Map({ places }) {
 
   const markers = useMemo(() => {
     if (!places) return null;
-    return places.map((place) => (
-      <CustomMarker place={place} isMobile={isMobile} />
+    return places.map((place, i) => (
+      <CustomMarker
+        key={place.location_id}
+        index={i}
+        setClickedPlace={setClickedPlace}
+        place={place}
+        isMobile={isMobile}
+      />
     ));
   }, [places, isMobile]);
 

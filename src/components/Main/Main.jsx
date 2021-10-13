@@ -12,6 +12,7 @@ export default function Main() {
   const [type, setType] = useState('restaurants');
   const [rating, setRating] = useState(0);
   const [filteredPlaces, setFilteredPlaces] = useState([]);
+  const [clickedPlace, setClickedPlace] = useState(null);
   const cachedPlaces = useRef({});
 
   useEffect(() => {
@@ -68,10 +69,11 @@ export default function Main() {
           setType={setType}
           isLoading={isLoading}
           places={filteredPlaces}
+          clickedPlace={clickedPlace}
         />
       </Grid>
       <Grid item height={{ xs: '60vh', md: '100%' }} xs={12} md={8}>
-        <Map places={filteredPlaces} />
+        <Map setClickedPlace={setClickedPlace} places={filteredPlaces} />
       </Grid>
     </Grid>
   );

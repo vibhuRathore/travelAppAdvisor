@@ -1,3 +1,4 @@
+import { createRef, useEffect, useState } from 'react';
 import {
   Box,
   CircularProgress,
@@ -17,7 +18,26 @@ export default function List({
   isLoading,
   setRating,
   setType,
+  clickedPlace,
 }) {
+  const [placeRefs, setPlaceRefs] = useState([]);
+
+  useEffect(() => {
+    const refs = Array(places?.length ?? 0)
+      .fill(null)
+      .map((_, i) => placeRefs[i] || createRef());
+    setPlaceRefs(refs);
+  }, [places]);
+
+  useEffect(() => {
+    if (clickedPlace !== null) {
+      placeRefs[clickedPlace].current.scrollIntoView({
+        block: 'start',
+        behavior: 'smooth',
+      });
+    }
+  }, [clickedPlace]);
+
   return (
     <Box
       display="flex"
@@ -68,7 +88,7 @@ export default function List({
         ) : (
           <Grid container>
             {places?.map((place, index) => (
-              <Grid item key={index} xs={12}>
+              <Grid ref={placeRefs[index]} item key={index} xs={12}>
                 <PlaceDetails place={place} />
               </Grid>
             ))}
