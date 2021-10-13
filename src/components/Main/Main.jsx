@@ -71,7 +71,7 @@ export default function Main() {
         />
       </Grid>
       <Grid item height={{ xs: '60vh', md: '100%' }} xs={12} md={8}>
-        <Map />
+        <Map places={filteredPlaces} />
       </Grid>
     </Grid>
   );

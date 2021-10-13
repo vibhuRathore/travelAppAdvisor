@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect, useState } from 'react';
-import ReactMapGL, { Marker } from 'react-map-gl';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import ReactMapGL from 'react-map-gl';
 import debounce from 'lodash.debounce';
-import { LocationOn } from '@mui/icons-material';
+import { useMediaQuery } from '@mui/material';
 import { useViewport, useViewportUpdate } from '../../contexts/ViewportContext';
+import CustomMarker from './CustomMarker';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -14,10 +15,11 @@ mapboxgl.workerClass =
   // eslint-disable-next-line import/no-webpack-loader-syntax
   require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
-export default function Map() {
+export default function Map({ places }) {
   const viewportContext = useViewport();
   const setViewportContext = useViewportUpdate();
   const [viewport, setViewport] = useState(null);
+  const isMobile = useMediaQuery('(max-width: 600px)');
 
   const debouncedViewportContextSetter = useCallback(
     debounce((data) => {
@@ -51,10 +53,18 @@ export default function Map() {
     );
   }, []);
 
+  const markers = useMemo(() => {
+    if (!places) return null;
+    return places.map((place) => (
+      <CustomMarker place={place} isMobile={isMobile} />
+    ));
+  }, [places, isMobile]);
+
   return (
-    <div style={{ width: '100%', height: '100%' }}>
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       {viewport && (
         <ReactMapGL
+          style={{ position: 'relative' }}
           latitude={viewport.latitude}
           longitude={viewport.longitude}
           zoom={viewport.zoom}
@@ -68,9 +78,7 @@ export default function Map() {
             debouncedViewportContextSetter(newViewport);
           }}
         >
-          <Marker longitude={viewport.longitude} latitude={viewport.latitude}>
-            <LocationOn color="error" fontSize="large" />
-          </Marker>
+          {markers}
         </ReactMapGL>
       )}
     </div>
