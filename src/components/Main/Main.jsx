@@ -61,7 +61,7 @@ export default function Main() {
         marginInline: 'auto',
       }}
     >
-      <Grid height={{ xs: '60vh', md: '100%' }} item xs={12} md={4}>
+      <Grid height={{ xs: '85vh', md: '100%' }} item xs={12} md={4}>
         <List
           rating={rating}
           setRating={setRating}
@@ -72,7 +72,13 @@ export default function Main() {
           clickedPlace={clickedPlace}
         />
       </Grid>
-      <Grid item height={{ xs: '60vh', md: '100%' }} xs={12} md={8}>
+      <Grid
+        item
+        paddingTop={1}
+        height={{ xs: '45vh', md: '100%' }}
+        xs={12}
+        md={8}
+      >
         <Map setClickedPlace={setClickedPlace} places={filteredPlaces} />
       </Grid>
     </Grid>

@@ -42,7 +42,13 @@ export default function List({
     <Box
       display="flex"
       flexDirection="column"
-      sx={{ width: '100%', height: '100%', padding: 1, paddingBottom: 0 }}
+      sx={{
+        width: '100%',
+        height: '100%',
+        padding: 1,
+        paddingBottom: 0,
+        overflowY: 'auto',
+      }}
     >
       <Box width="100%">
         <Typography variant="h4">Food & Dining around you</Typography>
@@ -81,7 +87,6 @@ export default function List({
         flexDirection="column"
         alignItems="center"
         flexGrow={1}
-        sx={{ overflowY: 'auto' }}
       >
         {isLoading ? (
           <CircularProgress sx={{ margin: 'auto' }} size={70} />

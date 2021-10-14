@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import debounce from 'lodash.debounce';
+import { Search } from '@mui/icons-material';
 import { useViewport, useViewportUpdate } from '../../contexts/ViewportContext';
 import { getAutocompletionData } from '../../api';
 
@@ -47,11 +48,18 @@ export default function Header() {
   }, [value]);
 
   return (
-    <AppBar position="static">
+    <AppBar sx={{ justifyContent: 'center', height: '4rem' }} position="static">
       <Toolbar>
+        <img height="55%" src="/logo192.png" alt="" />
         <Typography
           variant="h5"
-          sx={{ display: { xs: 'none', sm: 'block', marginRight: 'auto' } }}
+          sx={{
+            textAlign: 'center',
+            fontSize: { xs: '1rem', sm: '1.5rem' },
+            width: { xs: '7ch', sm: 'auto' },
+            marginLeft: { xs: 0.3, sm: 1 },
+            marginRight: 'auto',
+          }}
         >
           Travel Advisor
         </Typography>
@@ -67,17 +75,28 @@ export default function Header() {
           autoHighlight
           includeInputInList
           autoComplete
+          size="small"
           sx={{
-            width: 250,
+            width: { xs: 200, sm: 250 },
             marginRight: { xs: 1, md: 0 },
             marginLeft: { xs: 'auto', md: 0 },
+            '& input': { color: 'white' },
+            '& label': { color: '#d5d5d5 !important' },
           }}
           renderInput={(params) => (
             <TextField
-              sx={{ color: 'white' }}
               {...params}
               label="Search..."
-              variant="filled"
+              InputProps={{
+                ...params.InputProps,
+                label: 'Search',
+                startAdornment: (
+                  <>
+                    <Search sx={{ color: '#d5d5d5' }} />
+                    {params.InputProps.startAdornment}
+                  </>
+                ),
+              }}
             />
           )}
           filterOptions={(x) => x}
