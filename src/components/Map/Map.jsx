@@ -5,6 +5,7 @@ import debounce from 'lodash.debounce';
 import { useMediaQuery } from '@mui/material';
 import { useViewport, useViewportUpdate } from '../../contexts/ViewportContext';
 import CustomMarker from './CustomMarker';
+import WeatherCard from './WeatherCard';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -15,7 +16,7 @@ mapboxgl.workerClass =
   // eslint-disable-next-line import/no-webpack-loader-syntax
   require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
-export default function Map({ places, setClickedPlace }) {
+export default function Map({ places, setClickedPlace, weatherData }) {
   const viewportContext = useViewport();
   const setViewportContext = useViewportUpdate();
   const [viewport, setViewport] = useState(null);
@@ -85,6 +86,7 @@ export default function Map({ places, setClickedPlace }) {
           }}
         >
           {markers}
+          {weatherData && <WeatherCard weatherData={weatherData} />}
         </ReactMapGL>
       )}
     </div>

@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
-import { useViewportBounds } from '../../contexts/ViewportContext';
+import { useViewport, useViewportBounds } from '../../contexts/ViewportContext';
 import List from '../List';
 import Map from '../Map';
-import { getPlacesData } from '../../api';
+import { getPlacesData, getWeatherData } from '../../api';
 
 export default function Main() {
   const viewportBounds = useViewportBounds();
+  const viewport = useViewport();
   const [places, setPlaces] = useState([]);
+  const [weatherData, setWeatherData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [type, setType] = useState('restaurants');
   const [rating, setRating] = useState(0);
@@ -43,13 +45,20 @@ export default function Main() {
 
   useEffect(() => {
     if (!viewportBounds) return;
+
     cachedPlaces.current = {};
     setIsLoading(true);
+
     const { sw, ne } = viewportBounds;
     getPlacesData(sw, ne, type).then((data) => {
       cachedPlaces.current[type] = data;
       setIsLoading(false);
       setPlaces(data);
+    });
+
+    const { latitude, longitude } = viewport;
+    getWeatherData(latitude, longitude).then((data) => {
+      setWeatherData(data);
     });
   }, [viewportBounds]);
 
@@ -80,7 +89,11 @@ export default function Main() {
         xs={12}
         md={8}
       >
-        <Map setClickedPlace={setClickedPlace} places={filteredPlaces} />
+        <Map
+          setClickedPlace={setClickedPlace}
+          places={filteredPlaces}
+          weatherData={weatherData}
+        />
       </Grid>
     </Grid>
   );
