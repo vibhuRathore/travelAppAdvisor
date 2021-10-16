@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import PlaceDetails from '../PlaceDetails';
+import notFound from './not-found.png';
 
 export default function List({
   rating,
@@ -89,9 +90,8 @@ export default function List({
         alignItems="center"
         flexGrow={1}
       >
-        {isLoading ? (
-          <CircularProgress sx={{ margin: 'auto' }} size={70} />
-        ) : (
+        {isLoading && <CircularProgress sx={{ margin: 'auto' }} size={70} />}
+        {!isLoading && places.length > 0 && (
           <Grid container>
             {places?.map((place, index) => (
               <Grid ref={placeRefs[index]} item key={index} xs={12}>
@@ -99,6 +99,19 @@ export default function List({
               </Grid>
             ))}
           </Grid>
+        )}
+        {!isLoading && places.length === 0 && (
+          <Box sx={{ width: '60%', margin: 'auto', textAlign: 'center' }}>
+            <img
+              src={notFound}
+              alt=""
+              style={{ marginX: 'auto', width: '35%' }}
+            />
+            <Typography variant="body1">
+              Sorry, no places found here, move around or search for different
+              area.
+            </Typography>
+          </Box>
         )}
       </Box>
     </Box>
