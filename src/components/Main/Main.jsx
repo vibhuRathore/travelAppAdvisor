@@ -93,6 +93,7 @@ export default function Main() {
           setClickedPlace={setClickedPlace}
           places={filteredPlaces}
           weatherData={weatherData}
+          isLoading={isLoading}
         />
       </Grid>
     </Grid>

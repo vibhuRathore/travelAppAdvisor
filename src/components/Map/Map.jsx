@@ -16,7 +16,12 @@ mapboxgl.workerClass =
   // eslint-disable-next-line import/no-webpack-loader-syntax
   require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
-export default function Map({ places, setClickedPlace, weatherData }) {
+export default function Map({
+  places,
+  setClickedPlace,
+  weatherData,
+  isLoading,
+}) {
   const viewportContext = useViewport();
   const setViewportContext = useViewportUpdate();
   const [viewport, setViewport] = useState(null);
@@ -55,7 +60,7 @@ export default function Map({ places, setClickedPlace, weatherData }) {
   }, []);
 
   const markers = useMemo(() => {
-    if (!places) return null;
+    if (!places || isLoading) return null;
     return places.map((place, i) => (
       <CustomMarker
         key={place.location_id}
@@ -65,7 +70,7 @@ export default function Map({ places, setClickedPlace, weatherData }) {
         isMobile={isMobile}
       />
     ));
-  }, [places, isMobile]);
+  }, [places, isMobile, isLoading]);
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -86,7 +91,7 @@ export default function Map({ places, setClickedPlace, weatherData }) {
           }}
         >
           {markers}
-          {weatherData && <WeatherCard weatherData={weatherData} />}
+          <WeatherCard weatherData={weatherData} />
         </ReactMapGL>
       )}
     </div>
