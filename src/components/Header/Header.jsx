@@ -3,16 +3,22 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   AppBar,
   Autocomplete,
+  IconButton,
   TextField,
   Toolbar,
+  Tooltip,
   Typography,
+  useTheme,
 } from '@mui/material';
 import debounce from 'lodash.debounce';
-import { Search } from '@mui/icons-material';
+import { Search, DarkModeRounded, LightModeRounded } from '@mui/icons-material';
 import { useViewport, useViewportUpdate } from '../../contexts/ViewportContext';
+import { useColorModeToggle } from '../../contexts/ColorModeContext';
 import { getAutocompletionData } from '../../api';
 
 export default function Header() {
+  const theme = useTheme();
+  const toggleColorMode = useColorModeToggle();
   const setViewportContext = useViewportUpdate();
   const viewportContext = useViewport();
   const [value, setValue] = useState(null);
@@ -63,12 +69,19 @@ export default function Header() {
         >
           Travel Advisor
         </Typography>
-        <Typography
-          variant="h6"
-          sx={{ display: { xs: 'none', md: 'block' }, marginX: 10 }}
-        >
-          Explore new places
-        </Typography>
+        <Tooltip title="Toggle theme" enterDelay={500}>
+          <IconButton
+            onClick={toggleColorMode}
+            color="default"
+            sx={{ marginX: { md: 5 } }}
+          >
+            {theme.palette.mode === 'light' ? (
+              <LightModeRounded />
+            ) : (
+              <DarkModeRounded />
+            )}
+          </IconButton>
+        </Tooltip>
         <Autocomplete
           id="search-place-autocomplete"
           clearOnEscape
