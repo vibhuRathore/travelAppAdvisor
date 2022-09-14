@@ -56,7 +56,7 @@ export default function Header() {
   return (
     <AppBar sx={{ justifyContent: 'center', height: '4rem' }} position="static">
       <Toolbar>
-        <img height="55%" src="/logo192.png" alt="" />
+        <img height="55%" src="/food-tray.png" alt="" />
         <Typography
           variant="h5"
           sx={{
@@ -67,7 +67,7 @@ export default function Header() {
             marginRight: 'auto',
           }}
         >
-          Travel Advisor
+          Dine-er
         </Typography>
         <Tooltip title="Toggle theme" enterDelay={500}>
           <IconButton
