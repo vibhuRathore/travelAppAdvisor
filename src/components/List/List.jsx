@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import PlaceDetails from '../PlaceDetails';
-import notFound from './not-found.png';
+// import notFound from './not-found.png';
 
 export default function List({
   rating,
@@ -53,8 +53,8 @@ export default function List({
       }}
     >
       <Box width="100%">
-        <Typography variant="h4">Food & Dining around you</Typography>
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+        <Typography variant="h4">Explore New Places</Typography>
+        {/* <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="type">Type</InputLabel>
           <Select
             labelId="type"
@@ -67,7 +67,7 @@ export default function List({
             <MenuItem value="hotels">Hotels</MenuItem>
             <MenuItem value="attractions">Attractions</MenuItem>
           </Select>
-        </FormControl>
+        </FormControl> */}
         <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="rating">Rating</InputLabel>
           <Select
@@ -102,14 +102,16 @@ export default function List({
         )}
         {!isLoading && places.length === 0 && (
           <Box sx={{ width: '60%', margin: 'auto', textAlign: 'center' }}>
-            <img
+            {/* <img
               src={notFound}
               alt=""
               style={{ marginX: 'auto', width: '35%' }}
-            />
+            /> */}
+            <Typography variant="h5" mb="1rem">
+              ⊙⁠﹏⁠⊙
+            </Typography>
             <Typography variant="body1">
-              Sorry, no places found here, move around or search for different
-              area.
+              Sorry, no places found here!
             </Typography>
           </Box>
         )}
