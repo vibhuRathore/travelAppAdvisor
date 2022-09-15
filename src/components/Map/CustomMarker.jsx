@@ -1,5 +1,5 @@
 import { LocationOn } from '@mui/icons-material';
-import { Paper, Rating, Tooltip, Typography } from '@mui/material';
+import { Paper, Rating, Tooltip, Typography, useTheme } from '@mui/material';
 import { Marker } from 'react-map-gl';
 import './CustomMarker.css';
 
@@ -9,6 +9,8 @@ export default function CustomMarker({
   setClickedPlace,
   isMobile,
 }) {
+  const theme = useTheme();
+
   return (
     <Marker
       key={place.location_id}
@@ -33,7 +35,7 @@ export default function CustomMarker({
           sx={{
             width: 104,
             paddingX: 1,
-            backgroundColor: 'white',
+            backgroundColor: theme.palette.background.default,
           }}
         >
           <Tooltip disableInteractive placement="top" title={place.name}>
