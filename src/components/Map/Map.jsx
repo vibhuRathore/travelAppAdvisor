@@ -46,15 +46,15 @@ export default function Map({
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         const { latitude, longitude } = coords;
-        const currentLocation = { latitude, longitude, zoom: 10 };
+        const currentLocation = { latitude, longitude, zoom: 12 };
         setViewportContext(currentLocation);
         setViewport(currentLocation);
       },
       () => {
         const fallbackViewport = {
-          latitude: 34.0161,
-          longitude: 75.315,
-          zoom: 9,
+          latitude: 30.3165,
+          longitude: 78.0322,
+          zoom: 12,
         };
         setViewportContext(fallbackViewport);
         setViewport(fallbackViewport);
