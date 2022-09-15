@@ -10,8 +10,7 @@ import {
   Select,
   Typography,
 } from '@mui/material';
-import PlaceDetails from '../PlaceDetails';
-// import notFound from './not-found.png';
+import PlaceDetails from '../PlaceDetails/PlaceDetails';
 
 export default function List({
   rating,
@@ -102,11 +101,6 @@ export default function List({
         )}
         {!isLoading && places.length === 0 && (
           <Box sx={{ width: '60%', margin: 'auto', textAlign: 'center' }}>
-            {/* <img
-              src={notFound}
-              alt=""
-              style={{ marginX: 'auto', width: '35%' }}
-            /> */}
             <Typography variant="h5" mb="1rem">
               ⊙⁠﹏⁠⊙
             </Typography>

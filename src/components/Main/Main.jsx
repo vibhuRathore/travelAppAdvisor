@@ -2,8 +2,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
 import { useViewport, useViewportBounds } from '../../contexts/ViewportContext';
-import List from '../List';
-import Map from '../Map';
+import List from '../List/List';
+import Map from '../Map/Map';
 import { getPlacesData, getWeatherData } from '../../api';
 
 export default function Main() {
